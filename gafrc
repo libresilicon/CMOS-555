@@ -9,9 +9,9 @@
 ;;                          www.chipforge.org
 ;;                  there are projects from small cores up to PCBs, too.
 ;;
-;;  File:           CMOS-555/GNUmakefile
+;;  File:           CMOS-555/gafrc
 ;;
-;;  Purpose:        Root Makefile
+;;  Purpose:        gEDA / gaf / lepton-EDA configuration file
 ;;
 ;;  ************    GNU Make 3.80 Source Code       ****************
 ;;
