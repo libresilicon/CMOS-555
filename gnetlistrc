@@ -9,9 +9,9 @@
 ;;                          www.chipforge.org
 ;;                  there are projects from small cores up to PCBs, too.
 ;;
-;;  File:           CMOS-555/gafrc
+;;  File:           CMOS-555/gnetlistrc
 ;;
-;;  Purpose:        gEDA / gaf / lepton-EDA configuration file
+;;  Purpose:        gEDA / gaf / lepton-EDA netlister file
 ;;
 ;;  ************    GNU Make 3.80 Source Code       ****************
 ;;
@@ -34,9 +34,13 @@
 ;;  ////////////////////////////////////////////////////////////////////
 
 ;;  ----------------------------------------------------------------
-;;              LIBRARY DEFINITIONS
+;;              SWITCHES
 ;;  ----------------------------------------------------------------
 
-(source-library "Sources/geda")
-(component-library "Sources/geda")
-(component-library "Library/spice")
+;(hierarchy-netattrib-mangle "enabled")
+;(hierarchy-netname-mangle "enabled")
+;(hierarchy-uref-mangle "enabled")
+(hierarchy-uref-order "append")
+;(hierarchy-uref-separator "_")
+(hierarchy-traversal "disabled")
+

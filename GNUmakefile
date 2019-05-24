@@ -63,8 +63,9 @@ DISTRIBUTION =  GNUmakefile README.md \
                 $(SOURCESDIR) \
                 $(SIMULATIONDIR) \
                 $(TBENCHDIR)
-NETLIST ?=      lepton-netlist -g spice-sdb -o
-SPICE ?=        ngspice -b
+#NETLIST ?=      lepton-netlist -g spice-sdb -o
+NETLIST ?=      gnetlist -g spice-sdb -o
+SPICE ?=        ngspice -b -c
 
 #   others
 
@@ -114,6 +115,8 @@ dist: clean
 clean:
 	$(ECHO) "---- clean up all intermediate files ----"
 	$(MAKE) -C $(DOCUMENTSDIR)/LaTeX -f GNUmakefile $@
+	$(RM) $(SOURCESDIR)/spice/*.cir
+	$(RM) $(TBENCHDIR)/spice/*.sp
 	$(RM) $(SIMULATIONDIR)/spice/*.txt
 
 #   run LaTeX for data sheets etc.
@@ -132,14 +135,29 @@ doc:
 #   common simulation target
 
 .PHONY: sim
-sim:    Use-Case_astable-mode
+sim:    $(TESTS)
 
 #   Use-Case Astable Mode
 
 Use-Case_astable-mode:  $(SIMULATIONDIR)/Use-Case_astable-mode.txt
 
-$(SIMULATIONDIR)/Use-Case_astable-mode.txt:   $(TBENCHDIR)/spice/Use-Case_astable-mode.sp
-	$(SPICE) $< > $@
+$(SIMULATIONDIR)/Use-Case_astable-mode.txt:   $(SOURCESDIR)/spice/555_Book-Version.cir $(TBENCHDIR)/spice/Use-Case_astable-mode.sp
+	$(SPICE) $? > $@
 
-$(TBENCHDIR)/spice/Use-Case_astable-mode.sp:    $(TBENCHDIR)/geda/Use-Case_astable-mode.sch
-	$(NETLIST) $< $@
+$(TBENCHDIR)/spice/Use-Case_astable-mode.sp:    $(TBENCHDIR)/geda/Use-Case_astable-mode.sch # $(SIMULATIONDIR)/spice/Use-Case_astable-mode.cmd
+	$(NETLIST) $@ $<
+
+#   555 Circuits
+
+$(SOURCESDIR)/spice/555_Book-Version.cir:   $(SOURCESDIR)/geda/555_Book-Version.sch
+	$(NETLIST) $@ $?
+
+$(SOURCESDIR)/spice/555_Righto-Version.cir:   $(SOURCESDIR)/geda/555_Righto-Version.sch
+	$(NETLIST) $@ $?
+
+$(SOURCESDIR)/spice/555_Wikimedia-Version.cir:   $(SOURCESDIR)/geda/555_Wikimedia-Version.sch
+	$(NETLIST) $@ $?
+
+#$(SOURCESDIR)/spice/555_Data-Sheet-Version.cir:   $(SOURCESDIR)/geda/555_Data-Sheet-Version.sch
+#	$(NETLIST) $@ $?
+
